@@ -1,0 +1,423 @@
+From be9e524c13c783b52d8cda43ff6c367e0c854871 Mon Sep 17 00:00:00 2001
+From: Gerard Ryan <gerard@ryan.lt>
+Date: Wed, 2 Jan 2013 23:52:57 +0000
+Subject: [PATCH] Implement missing methods needed for WSDL4J 1.6.2
+
+This is a fix for https://bugs.eclipse.org/bugs/show_bug.cgi?id=265772
+
+To update the dependency on WSDL4J from 1.5.x to 1.6.2, some additional
+methods must be added. More information can be found in the JSR110 JWSDL
+1.2 Maintenance Release Change Log at
+jcp.org/aboutJava/communityprocess/maintenance/jsr110/wsdl-1_2-mr-changelog.pdf
+---
+ bundles/org.eclipse.wst.wsdl/META-INF/MANIFEST.MF  |  2 +-
+ .../internal/impl/MIMEMultipartRelatedImpl.java    | 13 +++++
+ .../binding/mime/internal/impl/MIMEPartImpl.java   | 14 +++++
+ .../binding/soap/internal/impl/SOAPHeaderImpl.java | 14 +++++
+ .../wst/wsdl/internal/impl/BindingImpl.java        | 16 ++++++
+ .../wsdl/internal/impl/BindingOperationImpl.java   | 17 ++++++
+ .../wst/wsdl/internal/impl/DefinitionImpl.java     | 60 ++++++++++++++++++++++
+ .../wsdl/internal/impl/ExtensibleElementImpl.java  | 14 +++++
+ .../wst/wsdl/internal/impl/MessageImpl.java        | 17 ++++++
+ .../wst/wsdl/internal/impl/OperationImpl.java      | 18 +++++++
+ .../wst/wsdl/internal/impl/PortTypeImpl.java       | 22 ++++++++
+ .../wst/wsdl/internal/impl/ServiceImpl.java        | 17 ++++++
+ .../wsdl/internal/impl/wsdl4j/WSDLReaderImpl.java  |  5 ++
+ 13 files changed, 228 insertions(+), 1 deletion(-)
+
+diff --git a/bundles/org.eclipse.wst.wsdl/META-INF/MANIFEST.MF b/bundles/org.eclipse.wst.wsdl/META-INF/MANIFEST.MF
+index 7fad7d7..f564643 100644
+--- webtools.webservices/bundles/org.eclipse.wst.wsdl/META-INF/MANIFEST.MF
++++ webtools.webservices/bundles/org.eclipse.wst.wsdl/META-INF/MANIFEST.MF
+@@ -28,7 +28,7 @@ Export-Package: org.eclipse.wst.wsdl,
+ Require-Bundle: org.eclipse.emf.ecore;bundle-version="[2.2.0,3.0.0)",
+  org.eclipse.xsd;bundle-version="[2.2.0,3.0.0)",
+  org.eclipse.core.resources;bundle-version="[3.2.0,4.0.0)",
+- javax.wsdl;bundle-version="[1.5.0,1.6.0)",
++ javax.wsdl;bundle-version="[1.6.2,1.7.0)",
+  org.eclipse.core.runtime;bundle-version="[3.2.0,4.0.0)",
+  org.apache.xerces;bundle-version="[2.8.0,3.0.0)"
+ Import-Package: com.ibm.icu.util; version="3.8" 
+diff --git a/bundles/org.eclipse.wst.wsdl/src-mime/org/eclipse/wst/wsdl/binding/mime/internal/impl/MIMEMultipartRelatedImpl.java b/bundles/org.eclipse.wst.wsdl/src-mime/org/eclipse/wst/wsdl/binding/mime/internal/impl/MIMEMultipartRelatedImpl.java
+index 1854f2d..36f086c 100644
+--- webtools.webservices/bundles/org.eclipse.wst.wsdl/src-mime/org/eclipse/wst/wsdl/binding/mime/internal/impl/MIMEMultipartRelatedImpl.java
++++ webtools.webservices/bundles/org.eclipse.wst.wsdl/src-mime/org/eclipse/wst/wsdl/binding/mime/internal/impl/MIMEMultipartRelatedImpl.java
+@@ -113,6 +113,19 @@ public class MIMEMultipartRelatedImpl extends ExtensibilityElementImpl implement
+    * <!-- end-user-doc -->
+    * @generated NOT
+    */
++  public javax.wsdl.extensions.mime.MIMEPart removeMIMEPart(javax.wsdl.extensions.mime.MIMEPart mimePart)
++  {
++    if(getEMIMEPart().remove(mimePart))
++      return mimePart;
++    else
++      return null;
++  }
++
++  /**
++   * <!-- begin-user-doc -->
++   * <!-- end-user-doc -->
++   * @generated NOT
++   */
+   public List getMIMEParts()
+   {
+     return getEMIMEPart();
+diff --git a/bundles/org.eclipse.wst.wsdl/src-mime/org/eclipse/wst/wsdl/binding/mime/internal/impl/MIMEPartImpl.java b/bundles/org.eclipse.wst.wsdl/src-mime/org/eclipse/wst/wsdl/binding/mime/internal/impl/MIMEPartImpl.java
+index 7baafca..7dc9177 100644
+--- webtools.webservices/bundles/org.eclipse.wst.wsdl/src-mime/org/eclipse/wst/wsdl/binding/mime/internal/impl/MIMEPartImpl.java
++++ webtools.webservices/bundles/org.eclipse.wst.wsdl/src-mime/org/eclipse/wst/wsdl/binding/mime/internal/impl/MIMEPartImpl.java
+@@ -117,6 +117,20 @@ public class MIMEPartImpl extends ExtensibilityElementImpl implements MIMEPart
+    * <!-- end-user-doc -->
+    * @generated NOT
+    */
++  public javax.wsdl.extensions.ExtensibilityElement removeExtensibilityElement(
++    javax.wsdl.extensions.ExtensibilityElement extensibilityElement)
++  {
++    if (getExtensibilityElements().remove(extensibilityElement))
++      return extensibilityElement;
++    else
++      return null;
++  }
++
++  /**
++   * <!-- begin-user-doc -->
++   * <!-- end-user-doc -->
++   * @generated NOT
++   */
+   public List getExtensibilityElements()
+   {
+     return getEExtensibilityElements();
+diff --git a/bundles/org.eclipse.wst.wsdl/src-soap/org/eclipse/wst/wsdl/binding/soap/internal/impl/SOAPHeaderImpl.java b/bundles/org.eclipse.wst.wsdl/src-soap/org/eclipse/wst/wsdl/binding/soap/internal/impl/SOAPHeaderImpl.java
+index 9815c67..061e720 100644
+--- webtools.webservices/bundles/org.eclipse.wst.wsdl/src-soap/org/eclipse/wst/wsdl/binding/soap/internal/impl/SOAPHeaderImpl.java
++++ webtools.webservices/bundles/org.eclipse.wst.wsdl/src-soap/org/eclipse/wst/wsdl/binding/soap/internal/impl/SOAPHeaderImpl.java
+@@ -121,6 +121,20 @@ public class SOAPHeaderImpl extends SOAPHeaderBaseImpl implements SOAPHeader
+   /**
+    * <!-- begin-user-doc -->
+    * <!-- end-user-doc -->
++   * @generated NOT
++   */
++  public javax.wsdl.extensions.soap.SOAPHeaderFault removeSOAPHeaderFault(
++    javax.wsdl.extensions.soap.SOAPHeaderFault soapHeaderFault)
++  {
++    if (getHeaderFaults().remove(soapHeaderFault))
++      return soapHeaderFault;
++    else
++      return null;
++  }
++
++  /**
++   * <!-- begin-user-doc -->
++   * <!-- end-user-doc -->
+    * @generated
+    */
+   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+diff --git a/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/BindingImpl.java b/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/BindingImpl.java
+index 789975e..98a5641 100644
+--- webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/BindingImpl.java
++++ webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/BindingImpl.java
+@@ -261,6 +261,22 @@ public class BindingImpl extends ExtensibleElementImpl implements Binding
+ 
+   /**
+    * <!-- begin-user-doc -->
++   * <!-- end-user-doc -->
++   * @generated
++   */
++  public javax.wsdl.BindingOperation removeBindingOperation(String name, String inputName, String outputName)
++  {
++    javax.wsdl.BindingOperation op = getBindingOperation(name, inputName, outputName);
++    if(getBindingOperations().remove(op))
++    {
++      return op;
++    }
++    else
++      return null;
++  }
++
++  /**
++   * <!-- begin-user-doc -->
+    * Get the specified operation binding. Note that operation names can
+    * be overloaded within a PortType. In case of overloading, the
+    * names of the input and output messages can be used to further
+diff --git a/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/BindingOperationImpl.java b/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/BindingOperationImpl.java
+index ee11780..bfb52f4 100644
+--- webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/BindingOperationImpl.java
++++ webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/BindingOperationImpl.java
+@@ -377,6 +377,23 @@ public class BindingOperationImpl extends ExtensibleElementImpl implements Bindi
+ 
+   /**
+    * <!-- begin-user-doc -->
++   * Remove a fault binding.
++   * @param name the name of the fault binding to remove.
++   * @return the removed fault binding.
++   * <!-- end-user-doc -->
++   * @generated NOT
++   */
++  public javax.wsdl.BindingFault removeBindingFault(String name)
++  {
++    javax.wsdl.BindingFault fault = getBindingFault(name);
++    if (getEBindingFaults().remove(fault))
++      return fault;
++    else
++      return null;
++  }
++
++  /**
++   * <!-- begin-user-doc -->
+    * Get the specified fault binding.
+    * @param name the name of the desired fault binding.
+    * @return the corresponding fault binding, or null if there wasn't
+diff --git a/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/DefinitionImpl.java b/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/DefinitionImpl.java
+index 1b7b106..9f1a8d9 100644
+--- webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/DefinitionImpl.java
++++ webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/DefinitionImpl.java
+@@ -903,6 +903,17 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
+ 
+   /**
+    * <!-- begin-user-doc -->
++   * @see getBindings()
++   * <!-- end-user-doc -->
++   * @generated NOT
++   */
++  public Map getAllBindings()
++  {
++    return getBindings();
++  }
++
++  /**
++   * <!-- begin-user-doc -->
+    * Get a map of lists containing all the imports defined here.
+    * The map's keys are the namespaceURIs, and the map's values
+    * are lists. There is one list for each namespaceURI for which
+@@ -1042,6 +1053,17 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
+ 
+   /**
+    * <!-- begin-user-doc -->
++   * @see getPortTypes()
++   * <!-- end-user-doc -->
++   * @generated NOT
++   */
++  public Map getAllPortTypes()
++  {
++    return getPortTypes();
++  }
++
++  /**
++   * <!-- begin-user-doc -->
+    * Get a prefix associated with this namespace URI. Or null if
+    * there are no prefixes associated with this namespace URI. This is
+    * unrelated to the &lt;wsdl:import&gt; element.
+@@ -1095,6 +1117,17 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
+ 
+   /**
+    * <!-- begin-user-doc -->
++   * @see getServices()
++   * <!-- end-user-doc -->
++   * @generated NOT
++   */
++  public Map getAllServices()
++  {
++    return getServices();
++  }
++
++  /**
++   * <!-- begin-user-doc -->
+    * Get a reference to the ExtensionRegistry for this Definition.
+    * <!-- end-user-doc -->
+    * @generated NOT
+@@ -1212,6 +1245,33 @@ public class DefinitionImpl extends ExtensibleElementImpl implements Definition
+ 
+   /**
+    * <!-- begin-user-doc -->
++   * Remove the specified import
++   * @param the import to remove
++   * @return the removed import
++   * <!-- end-user-doc -->
++   * @generated NOT
++   */
++  public javax.wsdl.Import removeImport(javax.wsdl.Import importDef)
++  {
++    if (getEImports().remove(importDef))
++      return importDef;
++    else
++      return null;
++  }
++
++  /**
++   * Remove the namespace URI associated with this prefix, or null
++   * if there is no namespace URI associated with this prefix.
++   * @param prefix
++   * @generated NOT
++   */
++  public String removeNamespace(String prefix)
++  {
++    return (String)getNamespaces().remove(prefix);
++  }
++
++  /**
++   * <!-- begin-user-doc -->
+    * <!-- end-user-doc -->
+    * @generated NOT
+    */
+diff --git a/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/ExtensibleElementImpl.java b/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/ExtensibleElementImpl.java
+index c3c05c7..979501a 100644
+--- webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/ExtensibleElementImpl.java
++++ webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/ExtensibleElementImpl.java
+@@ -117,6 +117,20 @@ public abstract class ExtensibleElementImpl extends WSDLElementImpl implements E
+   /**
+    * <!-- begin-user-doc -->
+    * <!-- end-user-doc -->
++   * @generated NOT
++   */
++  public javax.wsdl.extensions.ExtensibilityElement removeExtensibilityElement(
++    javax.wsdl.extensions.ExtensibilityElement extensibilityElement)
++  {
++    if (getExtensibilityElements().remove(extensibilityElement))
++      return extensibilityElement;
++    else
++      return null;
++  }
++
++  /**
++   * <!-- begin-user-doc -->
++   * <!-- end-user-doc -->
+    * @generated
+    */
+   public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs)
+diff --git a/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/MessageImpl.java b/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/MessageImpl.java
+index 11840aa..af0404d 100644
+--- webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/MessageImpl.java
++++ webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/MessageImpl.java
+@@ -208,6 +208,23 @@ public class MessageImpl extends ExtensibleElementImpl implements Message
+ 
+   /**
+    * <!-- begin-user-doc -->
++   * Remove a part from this message.
++   * @param name the name of part to be removed
++   * @return the removed part
++   * <!-- end-user-doc -->
++   * @generated NOT
++   */
++  public javax.wsdl.Part removePart(String name)
++  {
++    javax.wsdl.Part part = getPart(name);
++    if (getEParts().remove(part))
++      return part;
++    else
++      return null;
++  }
++
++  /**
++   * <!-- begin-user-doc -->
+    * Get the specified part.
+    * @param name the name of the desired part.
+    * @return the corresponding part, or null if there wasn't
+diff --git a/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/OperationImpl.java b/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/OperationImpl.java
+index 9ba8b32..b808791 100644
+--- webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/OperationImpl.java
++++ webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/OperationImpl.java
+@@ -529,6 +529,24 @@ return opType;
+ 
+   /**
+    * <!-- begin-user-doc -->
++   * Remove a fault message that is associated with this
++   * operation.
++   * @param name the name of the removed fault message
++   * @return the removed fault message
++   * <!-- end-user-doc -->
++   * @generated NOT
++   */
++  public javax.wsdl.Fault removeFault(String name)
++  {
++    javax.wsdl.Fault fault = getFault(name);
++    if (getEFaults().remove(fault))
++      return fault;
++    else
++      return null;
++  }
++
++  /**
++   * <!-- begin-user-doc -->
+    * Get the specified fault message.
+    * @param name the name of the desired fault message.
+    * @return the corresponding fault message, or null if there wasn't
+diff --git a/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/PortTypeImpl.java b/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/PortTypeImpl.java
+index 2becb30..73c6a03 100644
+--- webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/PortTypeImpl.java
++++ webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/PortTypeImpl.java
+@@ -207,6 +207,28 @@ public class PortTypeImpl extends ExtensibleElementImpl implements PortType
+ 
+   /**
+    * <!-- begin-user-doc -->
++   * Remove an operation from this port type.
++   * @param name the name of the desired operation.
++   * @param inputName the name of the input message; if this is null
++   *        it will be ignored.
++   * @param outputName the name of the output message; if this is null
++   *        it will be ignored.
++   * @return the corresponding operation, or null if there wasn't
++   *         any matching operation
++   * <!-- end-user-doc -->
++   * @generated NOT
++   */
++  public javax.wsdl.Operation removeOperation(String name, String inputName, String outputName)
++  {
++    javax.wsdl.Operation op = getOperation(name, inputName, outputName);
++    if (getEOperations().remove(op))
++      return op;
++    else
++      return null;
++  }
++
++  /**
++   * <!-- begin-user-doc -->
+    * Get the specified operation. Note that operation names can
+    * be overloaded within a PortType. In case of overloading, the
+    * names of the input and output messages can be used to further
+diff --git a/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/ServiceImpl.java b/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/ServiceImpl.java
+index c2c559a..1fdbd87 100644
+--- webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/ServiceImpl.java
++++ webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/ServiceImpl.java
+@@ -207,6 +207,23 @@ public class ServiceImpl extends ExtensibleElementImpl implements Service
+ 
+   /**
+    * <!-- begin-user-doc -->
++   * Remove a port from this service.
++   * @param name the name of the port to be removed
++   * @return the removed port
++   * <!-- end-user-doc -->
++   * @generated NOT
++   */
++  public javax.wsdl.Port removePort(String name)
++  {
++    javax.wsdl.Port port = getPort(name);
++    if (getEPorts().remove(port))
++      return port;
++    else
++      return null;
++  }
++
++  /**
++   * <!-- begin-user-doc -->
+    * Get all the ports defined here.
+    * <!-- end-user-doc -->
+    * @generated NOT
+diff --git a/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/wsdl4j/WSDLReaderImpl.java b/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/wsdl4j/WSDLReaderImpl.java
+index b6963f6..2ee9bae 100644
+--- webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/wsdl4j/WSDLReaderImpl.java
++++ webtools.webservices/bundles/org.eclipse.wst.wsdl/src-wsdl/org/eclipse/wst/wsdl/internal/impl/wsdl4j/WSDLReaderImpl.java
+@@ -216,6 +216,11 @@ public final class WSDLReaderImpl implements WSDLReader
+     throw new WSDLException(WSDLException.OTHER_ERROR, "Not Implemented");
+   }
+ 
++  public Definition readWSDL(WSDLLocator locator, Element element) throws WSDLException
++  {
++    throw new WSDLException(WSDLException.OTHER_ERROR, "Not Implemented");
++  }
++
+   private URI createURI(String uriString)
+   {
+     if (hasProtocol(uriString))
+-- 
+1.8.0.2
+

@@ -1,0 +1,16 @@
+--- webtools.jsdt/features/org.eclipse.wst.jsdt_sdk.feature/feature.xml.orig	2015-09-04 21:39:56.137266664 +0100
++++ webtools.jsdt/features/org.eclipse.wst.jsdt_sdk.feature/feature.xml	2015-09-04 21:40:35.383723326 +0100
+@@ -27,11 +27,12 @@
+          id="org.eclipse.wst.jsdt.nodejs.feature.source"
+          version="0.0.0"/>
+ 
+-   <plugin
++<!--   <plugin
+          id="org.mozilla.javascript.source"
+          download-size="0"
+          install-size="0"
+          version="1.7.5.qualifier"
+          unpack="false"/>
++   -->
+ 
+ </feature>

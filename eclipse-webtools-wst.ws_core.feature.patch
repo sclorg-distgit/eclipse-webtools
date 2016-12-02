@@ -1,0 +1,20 @@
+--- webtools.webservices/features/org.eclipse.wst.ws_core.feature/feature.xml.orig	2016-07-06 11:04:45.888889405 +0100
++++ webtools.webservices/features/org.eclipse.wst.ws_core.feature/feature.xml	2016-07-06 11:05:41.326227917 +0100
+@@ -83,7 +83,7 @@
+          id="org.apache.commons.logging"
+          download-size="0"
+          install-size="0"
+-         version="1.0.4.qualifier"
++         version="0.0.0"
+          unpack="false"/>
+ 
+    <plugin
+@@ -123,7 +123,7 @@
+          id="javax.xml.soap"
+          download-size="0"
+          install-size="0"
+-         version="1.2.0.qualifier"/>
++         version="0.0.0"/>
+ 
+    <plugin
+          id="org.apache.axis"

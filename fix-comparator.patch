@@ -1,0 +1,11 @@
+--- webtools.sourceediting/bundles/org.eclipse.wst.sse.ui/src/org/eclipse/wst/sse/ui/preferences/CodeAssistCyclingConfigurationBlock.java.sav	2016-06-01 10:29:05.002831350 +0300
++++ webtools.sourceediting/bundles/org.eclipse.wst.sse.ui/src/org/eclipse/wst/sse/ui/preferences/CodeAssistCyclingConfigurationBlock.java	2016-06-01 10:29:24.431819455 +0300
+@@ -885,7 +885,7 @@
+ 		 * @see org.eclipse.jface.viewers.ViewerComparator#compare(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+ 		 */
+ 		public int compare(Viewer viewer, Object e1, Object e2) {
+-			return this.getComparator().compare(e1, e2);
++			return this.getComparator().compare((String)e1, (String)e2);
+ 		}
+ 	}
+ }

@@ -1,0 +1,49 @@
+--- webtools.dali/jpa/features/org.eclipse.jpt.jpa.feature/feature.xml.orig	2014-06-21 23:00:02.310242356 +0100
++++ webtools.dali/jpa/features/org.eclipse.jpt.jpa.feature/feature.xml	2014-06-21 23:02:38.841972083 +0100
+@@ -28,13 +28,6 @@
+    </requires>
+ 
+    <plugin
+-         id="javax.persistence"
+-         download-size="0"
+-         install-size="0"
+-         version="2.1.0.qualifier"
+-         unpack="false"/>
+-
+-   <plugin
+          id="org.eclipse.jpt.jpa.annotate"
+          download-size="0"
+          install-size="0"
+@@ -94,28 +87,28 @@
+          id="org.apache.commons.collections"
+          download-size="0"
+          install-size="0"
+-         version="3.2.2.qualifier"
++         version="0.0.0"
+          unpack="false"/>
+ 
+    <plugin
+          id="org.apache.commons.lang"
+          download-size="0"
+          install-size="0"
+-         version="2.6.0.qualifier"
++         version="0.0.0"
+          unpack="false"/>
+ 
+    <plugin
+          id="org.apache.velocity"
+          download-size="0"
+          install-size="0"
+-         version="1.5.0.qualifier"
++         version="0.0.0"
+          unpack="false"/>
+ 
+    <plugin
+          id="org.jdom"
+          download-size="0"
+          install-size="0"
+-         version="1.1.1.qualifier"
++         version="0.0.0"
+          unpack="false"/>
+ 
+    <plugin

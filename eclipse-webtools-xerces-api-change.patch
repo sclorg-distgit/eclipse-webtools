@@ -1,0 +1,19 @@
+--- webtools.sourceediting/bundles/org.eclipse.wst.xml.core/src-validation/org/eclipse/wst/xml/core/internal/validation/XMLValidator.java.orig	2014-05-13 22:01:13.881584751 +0100
++++ webtools.sourceediting/bundles/org.eclipse.wst.xml.core/src-validation/org/eclipse/wst/xml/core/internal/validation/XMLValidator.java	2014-05-13 22:02:08.230114683 +0100
+@@ -854,7 +854,7 @@
+     		/* (non-Javadoc)
+     		 * @see org.apache.xerces.impl.XMLErrorReporter#reportError(java.lang.String, java.lang.String, java.lang.Object[], short)
+     		 */
+-    		public void reportError(String domain, String key, Object[] arguments, short severity) throws XNIException 
++    		public String reportError(String domain, String key, Object[] arguments, short severity) throws XNIException 
+     	    {                    
+ 		      boolean reportError = true;
+               valinfo.setCurrentErrorKey(key);  
+@@ -892,6 +892,7 @@
+ 		        super.reportError(domain, key, arguments, severity);
+ 		        valinfo.getErrorCustomizationManager().considerReportedError(valinfo, key, arguments);
+ 		      }
++		      return "";
+ 		    }
+ 		};
+     }

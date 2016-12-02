@@ -1,0 +1,36 @@
+--- webtools.dali/jaxb/features/org.eclipse.jpt.jaxb.eclipselink.feature/feature.xml.orig	2014-05-10 22:36:34.833792208 +0100
++++ webtools.dali/jaxb/features/org.eclipse.jpt.jaxb.eclipselink.feature/feature.xml	2014-05-10 22:44:18.511010760 +0100
+@@ -24,14 +24,14 @@
+       <import feature="org.eclipse.jpt.jaxb.feature" version="1.2.0"/>
+       <import feature="org.eclipse.jpt.common.eclipselink.feature" version="1.2.0"/>
+    </requires>
+-
++<!--
+    <plugin
+          id="org.eclipse.persistence.moxy"
+          download-size="0"
+          install-size="0"
+          version="2.6.0.qualifier"
+          unpack="false"/>
+-
++-->
+    <plugin
+          id="org.eclipse.jpt.jaxb.eclipselink.core"
+          download-size="0"
+@@ -45,14 +45,14 @@
+          install-size="0"
+          version="0.0.0"
+          unpack="false"/>
+-
++<!--
+    <plugin
+          id="org.eclipse.jpt.jaxb.eclipselink.core.schemagen"
+          download-size="0"
+          install-size="0"
+          version="0.0.0"
+          unpack="false"/>
+-
++-->
+    <plugin
+          id="org.eclipse.jpt.jaxb.eclipselink.branding"
+          download-size="0"

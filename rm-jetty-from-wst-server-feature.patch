@@ -1,0 +1,35 @@
+--- webtools.servertools/features/org.eclipse.wst.server_adapters.feature/feature.xml.sav	2016-06-01 15:22:06.474643173 +0300
++++ webtools.servertools/features/org.eclipse.wst.server_adapters.feature/feature.xml	2016-06-01 15:23:29.203577910 +0300
+@@ -16,6 +16,11 @@
+       %license
+    </license>
+ 
++   <requires>
++      <import plugin="org.eclipse.jetty.webapp"/>
++      <import plugin="org.eclipse.jetty.xml"/>
++   </requires>
++
+    <plugin
+          id="org.eclipse.wst.server.preview.adapter"
+          download-size="0"
+@@ -45,20 +48,6 @@
+          download-size="0"
+          install-size="0"
+          version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.eclipse.jetty.webapp"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+-         unpack="false"/>
+-
+-   <plugin
+-         id="org.eclipse.jetty.xml"
+-         download-size="0"
+-         install-size="0"
+-         version="0.0.0"
+          unpack="false"/>
+ 
+ </feature>

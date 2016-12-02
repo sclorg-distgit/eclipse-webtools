@@ -1,0 +1,30 @@
+--- webtools.webservices.jaxws/features/org.eclipse.jst.ws.cxf.feature/feature.xml.orig	2015-09-04 23:07:34.809623623 +0100
++++ webtools.webservices.jaxws/features/org.eclipse.jst.ws.cxf.feature/feature.xml	2015-09-04 23:11:24.884039770 +0100
+@@ -29,7 +29,7 @@
+          id="org.jdom"
+          download-size="156"
+          install-size="0"
+-         version="1.1.1.qualifier"
++         version="0.0.0"
+          unpack="false"/>
+ 
+    <plugin
+@@ -78,9 +78,9 @@
+          id="javax.wsdl"
+          download-size="0"
+          install-size="0"
+-         version="1.6.2.qualifier"
++         version="0.0.0"
+          unpack="false"/>
+-
++<!--
+    <plugin
+          id="javax.jws"
+          download-size="0"
+@@ -101,5 +101,5 @@
+          install-size="0"
+          version="2.1.0.qualifier"
+          unpack="false"/>
+-
++-->
+ </feature>

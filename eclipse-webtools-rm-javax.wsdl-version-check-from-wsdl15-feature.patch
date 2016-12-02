@@ -1,0 +1,11 @@
+--- webtools.webservices/features/org.eclipse.wst.ws_wsdl15.feature/feature.xml.orig	2014-05-11 14:48:51.996671329 +0100
++++ webtools.webservices/features/org.eclipse.wst.ws_wsdl15.feature/feature.xml	2014-05-11 14:49:13.309871109 +0100
+@@ -24,7 +24,7 @@
+          id="javax.wsdl"
+          download-size="0"
+          install-size="0"
+-         version="1.5.1.qualifier"
++         version="0.0.0"
+          unpack="false"/>
+ 
+ </feature>

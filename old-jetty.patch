@@ -1,0 +1,14 @@
+--- webtools.servertools/plugins/org.eclipse.wst.server.preview/src/org/eclipse/wst/server/preview/internal/ContextResourceHandler.java.orig	2016-08-03 10:49:27.944422583 +0100
++++ webtools.servertools/plugins/org.eclipse.wst.server.preview/src/org/eclipse/wst/server/preview/internal/ContextResourceHandler.java	2016-08-03 10:50:44.104487705 +0100
+@@ -25,6 +25,10 @@
+ 			return null;
+ 		
+ 		path = path.substring(context.length());
+-		return super.getResource(path);
++		try {
++			return super.getResource(path);
++		} catch(java.net.MalformedURLException e) {
++			return null;
++		}
+ 	}
+ }

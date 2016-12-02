@@ -1,0 +1,38 @@
+--- webtools.sourceediting.xsl/features/org.eclipse.wst.xsl.feature/feature.xml.orig	2014-05-19 20:55:59.542670738 +0100
++++ webtools.sourceediting.xsl/features/org.eclipse.wst.xsl.feature/feature.xml	2014-05-19 21:01:47.212727074 +0100
+@@ -76,14 +76,14 @@
+          install-size="0"
+          version="0.0.0"
+          unpack="false"/>
+-
++<!--
+    <plugin
+          id="org.apache.commons.logging"
+          download-size="0"
+          install-size="0"
+-         version="1.0.4.qualifier"
++         version="0.0.0"
+          unpack="false"/>
+-
++-->
+    <plugin
+          id="org.eclipse.wst.xsl.doc"
+          download-size="0"
+@@ -104,7 +104,7 @@
+          install-size="0"
+          version="0.0.0"
+          unpack="false"/>
+-
++<!--
+    <plugin
+          id="org.apache.bcel"
+          download-size="0"
+@@ -118,7 +118,7 @@
+          install-size="0"
+          version="0.0.0"
+          unpack="false"/>
+-
++-->
+    <plugin
+          id="org.eclipse.wst.xsl.saxon"
+          download-size="0"

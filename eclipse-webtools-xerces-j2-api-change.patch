@@ -1,0 +1,74 @@
+diff -ur webtools.webservices/bundles/org.eclipse.wst.wsdl.validation/src/org/eclipse/wst/wsdl/validation/internal/ValidationController.java webtools.webservices/bundles/org.eclipse.wst.wsdl.validation/src/org/eclipse/wst/wsdl/validation/internal/ValidationController.java
+--- webtools.webservices/bundles/org.eclipse.wst.wsdl.validation/src/org/eclipse/wst/wsdl/validation/internal/ValidationController.java	2006-04-20 07:20:47.000000000 +0100
++++ webtools.webservices/bundles/org.eclipse.wst.wsdl.validation/src/org/eclipse/wst/wsdl/validation/internal/ValidationController.java	2012-06-01 01:07:16.771193034 +0100
+@@ -308,18 +308,14 @@
+         {
+           return new XMLErrorReporter()
+           {
+-            public void reportError(String domain, String key, Object[] arguments, short severity) throws XNIException
++            public String reportError(String domain, String key, Object[] arguments, short severity) throws XNIException
+             {
+-              boolean reportError = true;
+-              if (key.equals("PrematureEOF"))
+-              {         
+-                reportError = false;
+-              }
+-
+-              if (reportError)
+-              {
+-                super.reportError(domain, key, arguments, severity);
+-              }
++            	if (key.equals("PrematureEOF"))
++                {         
++                 return ""; //not returning an error? I don't know circumstances, so just returning blank string
++                }
++            	//otherwise error 
++            	return super.reportError(domain, key, arguments, severity);
+             }
+           };
+         }
+diff -ur webtools.webservices/bundles/org.eclipse.wst.wsdl.validation/src/org/eclipse/wst/wsdl/validation/internal/wsdl11/WSDLReaderImpl.java webtools.webservices/bundles/org.eclipse.wst.wsdl.validation/src/org/eclipse/wst/wsdl/validation/internal/wsdl11/WSDLReaderImpl.java
+--- webtools.webservices/bundles/org.eclipse.wst.wsdl.validation/src/org/eclipse/wst/wsdl/validation/internal/wsdl11/WSDLReaderImpl.java	2009-01-14 18:48:52.000000000 +0000
++++ webtools.webservices/bundles/org.eclipse.wst.wsdl.validation/src/org/eclipse/wst/wsdl/validation/internal/wsdl11/WSDLReaderImpl.java	2012-06-01 01:07:41.640679125 +0100
+@@ -274,18 +274,14 @@
+         {
+           return new XMLErrorReporter()
+           {
+-            public void reportError(String domain, String key, Object[] arguments, short severity) throws XNIException
++            public String reportError(String domain, String key, Object[] arguments, short severity) throws XNIException
+             {
+-              boolean reportError = true;
+               if (key.equals("PrematureEOF"))
+                {         
+-                reportError = false;
+-              }
+-
+-              if (reportError)
+-               {
+-                super.reportError(domain, key, arguments, severity);
+-              }
++                return ""; //not returning an error? I don't know circumstances, so just returning blank string
++               }
++              //otherwise error 
++              return super.reportError(domain, key, arguments, severity);
+             }
+           };
+         }
+diff -ur webtools.webservices/bundles/org.eclipse.wst.wsdl.validation/src/org/eclipse/wst/wsdl/validation/internal/xml/DefaultXMLValidator.java webtools.webservices/bundles/org.eclipse.wst.wsdl.validation/src/org/eclipse/wst/wsdl/validation/internal/xml/DefaultXMLValidator.java
+--- webtools.webservices/bundles/org.eclipse.wst.wsdl.validation/src/org/eclipse/wst/wsdl/validation/internal/xml/DefaultXMLValidator.java	2009-01-14 18:48:51.000000000 +0000
++++ webtools.webservices/bundles/org.eclipse.wst.wsdl.validation/src/org/eclipse/wst/wsdl/validation/internal/xml/DefaultXMLValidator.java	2012-06-01 00:11:10.656489927 +0100
+@@ -307,12 +307,12 @@
+         /* (non-Javadoc)
+          * @see org.apache.xerces.impl.XMLErrorReporter#reportError(java.lang.String, java.lang.String, java.lang.Object[], short)
+          */
+-        public void reportError(String domain, String key, Object[] arguments,
++        public String reportError(String domain, String key, Object[] arguments,
+             short severity) throws XNIException
+         {
+           currentErrorKey = key;
+           currentMessageArguments = arguments;
+-          super.reportError(domain, key, arguments, severity);
++          return super.reportError(domain, key, arguments, severity);
+         }
+       };
+     }
