@@ -1,0 +1,75 @@
+diff --git a/bundles/org.eclipse.wst.jsdt.chromium.debug.core/plugin.xml b/bundles/org.eclipse.wst.jsdt.chromium.debug.core/plugin.xml
+index 0dfeb7f..87d8376 100755
+--- a/bundles/org.eclipse.wst.jsdt.chromium.debug.core/plugin.xml
++++ b/bundles/org.eclipse.wst.jsdt.chromium.debug.core/plugin.xml
+@@ -11,14 +11,6 @@
+ <plugin>
+ 
+   <!-- Breakpoint-related extensions -->
+-  <extension point="org.eclipse.core.runtime.adapters">
+-    <factory
+-        class="org.eclipse.wst.jsdt.chromium.debug.core.model.BreakpointAdapterFactory"
+-        adaptableType="org.eclipse.ui.texteditor.ITextEditor">
+-      <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget" /> 
+-    </factory>
+-  </extension>
+-  
+   <extension point="org.eclipse.debug.core.breakpoints">
+       <breakpoint
+         class="org.eclipse.wst.jsdt.chromium.debug.core.model.ChromiumLineBreakpoint"
+diff --git a/bundles/org.eclipse.wst.jsdt.chromium.debug.ui/plugin.xml b/bundles/org.eclipse.wst.jsdt.chromium.debug.ui/plugin.xml
+index 257b087..8128dfd 100755
+--- a/bundles/org.eclipse.wst.jsdt.chromium.debug.ui/plugin.xml
++++ b/bundles/org.eclipse.wst.jsdt.chromium.debug.ui/plugin.xml
+@@ -365,15 +365,21 @@
+       </objectContribution>
+   </extension>
+ 
+-   <!--extension
++  <extension
+          point="org.eclipse.ui.perspectiveExtensions">
+       <perspectiveExtension
+             targetID="org.eclipse.debug.ui.DebugPerspective">
+          <actionSet
+-               id="org.eclipse.wst.jsdt.chromium.debug.ui.ChromiumDebugActionSet">
++               id="org.eclipse.wst.jsdt.chromium.debug.ui.actionSets">
+          </actionSet>
+       </perspectiveExtension>
+-  </extension-->
++      <perspectiveExtension
++            targetID="org.eclipse.wst.jsdt.ui.JavaPerspective">
++         <actionSet
++               id="org.eclipse.wst.jsdt.chromium.debug.ui.actionSets">
++         </actionSet>
++      </perspectiveExtension>
++  </extension>
+ 
+   <extension
+          point="org.eclipse.ui.popupMenus">
+@@ -503,10 +509,10 @@
+         description="%DebugActionSet.label"
+         id="org.eclipse.wst.jsdt.chromium.debug.ui.actionSets"
+         label="%DebugActionSet.label"
+-        visible="true">
++        visible="false">
+       <action
+         label="%AddExceptionBreakpoint.label"
+-        icon="res/add v8-chrome exception breakpoint"
++        icon="res/chromium_16.png"
+         class="org.eclipse.wst.jsdt.chromium.debug.ui.actions.AddExceptionBreakpointAction"
+         menubarPath="org.eclipse.ui.run/breakpointGroup"
+         id="org.eclipse.wst.jsdt.chromium.debug.ui.actions.AddExceptionBreakpointAction">
+@@ -542,4 +548,13 @@
+ 	    </viewerContentBinding>
+   </extension>
+   
++  <extension point="org.eclipse.core.runtime.adapters">
++    <factory
++        class="org.eclipse.wst.jsdt.chromium.debug.core.model.BreakpointAdapterFactory"
++        adaptableType="org.eclipse.wst.jsdt.chromium.debug.ui.editors.JsEditor">
++      <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget" /> 
++    </factory>
++  </extension>
++  
++  
+ </plugin>

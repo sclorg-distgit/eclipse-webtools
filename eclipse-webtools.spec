@@ -2,7 +2,7 @@
 %{!?scl:%global pkg_name %{name}}
 %{?java_common_find_provides_and_requires}
 
-%global baserelease 2
+%global baserelease 3
 
 %global qualifier             v$(date -u +%G%m%d%H00)
 
@@ -87,6 +87,9 @@ Patch18:        rm-jetty-from-wst-server-feature.patch
 
 # Accomodate for older jetty
 Patch19:        old-jetty.patch
+
+# Fix break points intefering with CDT
+Patch20:        breakpoint_interference.patch
 
 BuildRequires:  %{?scl_prefix_maven}maven-local
 BuildRequires:  %{?scl_prefix}tycho
@@ -391,6 +394,9 @@ sed -i -e "s/javax.wsdl/javax.wsdl;bundle-version=\"[1.5.0,1.6.0)\"/" \
 %patch17
 %patch18
 %patch19
+pushd webtools.jsdt
+%patch20 -p1
+popd
 
 # Use glassfish, not tomcat
 sed -i -e 's/javax\.servlet/javax.servlet-api/' \
@@ -507,6 +513,9 @@ fi
 %endif
 
 %changelog
+* Tue Aug 16 2016 Mat Booth <mat.booth@redhat.com> - 3.8.0-1.3
+- Fix breakpoint inteference with CDT, rhbz#1367019
+
 * Mon Aug 01 2016 Mat Booth <mat.booth@redhat.com> - 3.8.0-1.2
 - Disable features that require datatools, which is not yet available
 - Fix version requirements of rhino and gson
